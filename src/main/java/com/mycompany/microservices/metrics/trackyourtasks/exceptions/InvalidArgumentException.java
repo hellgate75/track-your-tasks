@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author Fabrizio Torelli (hellgate75@gmail.com)
  */
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-public class InvalidArgumentException extends IllegalArgumentException {
+public class InvalidArgumentException extends IllegalArgumentException implements IRestExeption {
     public InvalidArgumentException() {
         super();
     }
@@ -20,5 +20,16 @@ public class InvalidArgumentException extends IllegalArgumentException {
     }
     public InvalidArgumentException(Throwable cause) {
         super(cause);
+    }
+
+    @Override
+    public int getCode() {
+        //Fake code
+        return HttpStatus.BAD_REQUEST.value();
+    }
+
+    @Override
+    public String getDescription() {
+        return this.getMessage();
     }
 }

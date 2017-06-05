@@ -21,7 +21,7 @@ import org.testng.annotations.ObjectFactory;
 import static org.junit.Assert.assertEquals;
 
 /**
- * REST Application Service Unit Tests
+ * REST Application Controller Unit Tests
  * @author Fabrizio Torelli (hellgate75@gmail.com)
  */
 @RunWith(PowerMockRunner.class)
@@ -96,7 +96,7 @@ public class UTControllerTest implements UnitTest {
         assertEquals("Rest call must be evaluated correctly", expected, output);
     }
 
-    @Test(expected = InternalException.class)
+    @Test
     public void testSimulateInternalErrorWhenAddingTaskInRest() {
         String output = taskManagementController.taskAdd(testErrorInputTask);
         String expected = "error";

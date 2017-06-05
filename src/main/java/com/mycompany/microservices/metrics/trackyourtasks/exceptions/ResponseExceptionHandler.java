@@ -1,6 +1,8 @@
 package com.mycompany.microservices.metrics.trackyourtasks.exceptions;
 
+import com.mycompany.microservices.metrics.trackyourtasks.events.EventLogger;
 import com.mycompany.microservices.metrics.trackyourtasks.model.RESTException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,6 +20,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ResponseExceptionHandler {
 
+    @Autowired
+    public EventLogger logger;
+
     /**
      * Handle Internal Generic Exception, related to unknown or unexpected application errors
      * @param ex Internal Generic Exception
@@ -27,7 +32,7 @@ public class ResponseExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public RESTException handleInternalException(final InternalException ex) {
-        //TODO: LOG into Db/Queue/console/service the exception according to logging policy and ms produce goals (has Dashboard, Centralized Logs, QA Stats, Security Tools, etc...)
+        logger.logException(ex);
         return new RESTException(HttpStatus.INTERNAL_SERVER_ERROR, InternalException.class.getName(), ex.getMessage());
     }
 
@@ -40,7 +45,7 @@ public class ResponseExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     public RESTException handleTaskNotFoundException(final TaskNotFoundException ex) {
-        //TODO: LOG into Db/Queue/console/service the exception according to logging policy and ms produce goals (has Dashboard, Centralized Logs, QA Stats, Security Tools, etc...)
+        logger.logException(ex);
         return new RESTException(HttpStatus.NOT_FOUND, TaskNotFoundException.class.getName(), ex.getMessage());
     }
 
@@ -52,8 +57,8 @@ public class ResponseExceptionHandler {
     @ExceptionHandler(InvalidArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public RESTException handleIllegalArgumentException(final InvalidArgumentException ex) {
-        //TODO: LOG into Db/Queue/console/service the exception according to logging policy and ms produce goals (has Dashboard, Centralized Logs, QA Stats, Security Tools, etc...)
+    public RESTException handleInvalidArgumentException(final InvalidArgumentException ex) {
+        logger.logException(ex);
         return new RESTException(HttpStatus.BAD_REQUEST, IllegalArgumentException.class.getName(), ex.getMessage());
     }
 }

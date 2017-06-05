@@ -7,6 +7,7 @@ import com.mycompany.microservices.metrics.trackyourtasks.model.InputTask;
 import com.mycompany.microservices.metrics.trackyourtasks.model.OutputTask;
 import com.mycompany.microservices.metrics.trackyourtasks.service.TaskManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/tasks")
 public class TaskManagementController {
-
     /**
      * Task Operations Service
      */
@@ -29,7 +29,7 @@ public class TaskManagementController {
      * @return OutputTask - Task Duration Average Model Object
      * @throws TaskNotFoundException Thrown when the task Id has no internal match
      */
-    @RequestMapping(value = "/stats/{taskId}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/stats/{taskId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     OutputTask getTasks(@PathVariable String taskId) throws TaskNotFoundException {
         try{
@@ -52,15 +52,13 @@ public class TaskManagementController {
      * @param task - Required Task Input Model (Request Body)
      * @return String - Plain text response with following values : "ok" and "error"
      */
-    @RequestMapping(value = "/add", method = RequestMethod.POST, produces = "text/plain", consumes = "application/json")
+    @RequestMapping(value = "/add", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public String taskAdd(@RequestBody InputTask task) {
         try{
             InputTask addedTask = taskService.addTask(task);
             return addedTask != null ? "ok" : "error";
-        } catch (IllegalArgumentException exception) {
-            throw new InvalidArgumentException(exception.getMessage());
-        } catch (Exception ex) {
-            throw new InternalException(ex);
+        } catch (Throwable ex) {
+            return "error";
         }
     }
 

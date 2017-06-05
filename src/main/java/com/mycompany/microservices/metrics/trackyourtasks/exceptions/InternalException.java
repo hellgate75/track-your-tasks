@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author Fabrizio Torelli (hellgate75@gmail.com)
  */
 @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-public class InternalException extends RuntimeException {
+public class InternalException extends RuntimeException implements IRestExeption {
     public InternalException() {
         super();
     }
@@ -21,4 +21,16 @@ public class InternalException extends RuntimeException {
     public InternalException(Throwable cause) {
         super(cause);
     }
+
+    @Override
+    public int getCode() {
+        //Fake code
+        return HttpStatus.INTERNAL_SERVER_ERROR.value();
+    }
+
+    @Override
+    public String getDescription() {
+        return this.getMessage();
+    }
+
 }

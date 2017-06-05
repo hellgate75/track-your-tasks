@@ -4,11 +4,14 @@ import com.mycompany.microservices.metrics.trackyourtasks.Application;
 import com.mycompany.microservices.metrics.trackyourtasks.exceptions.TaskNotFoundException;
 import com.mycompany.microservices.metrics.trackyourtasks.model.InputTask;
 import com.mycompany.microservices.metrics.trackyourtasks.model.OutputTask;
+import org.apache.commons.logging.LogFactory;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -33,6 +36,13 @@ public class ITApplicationTest {
     @Value("${test.server.port}")
     private String serverPort;
 
+    @Before
+    public void evaluatePort() {
+        if (serverPort.equals("")) {
+            serverPort = "8080";
+        }
+    }
+
     @Test
     public void integrationTestAddAndStatsTasksTogether() {
         assertAddAndStatsWorksTogether("sdfsdfsdfadf", 5);
@@ -47,20 +57,20 @@ public class ITApplicationTest {
     @Test(expected = HttpClientErrorException.class)
     public void integrationTestStatsVeryLongTaskId() throws TaskNotFoundException {
         //51 chars out of database id size with this implementation (max: 50)
-        double average = addTaskRandom("fislkfsnasfislkfsnasfislkfsnasfislkfsnasfislkfsnasr", 500, 5);
+        double average = addTaskRandom("fislkfsnasfislkfsnasfislkfsnasfislkfsnasfislkfsnasr", 500, 5,true);
         checkTaskStats("fislkfsnasfislkfsnasfislkfsnasfislkfsnasfislkfsnasr", average);
     }
 
     @Test(expected = HttpClientErrorException.class)
     public void integrationTestStatsVeryLongForceSearchByTaskId() throws TaskNotFoundException {
-        double average = addTaskRandom("fislkfsnasfislkfsnasfislkfsnasfislkfsnasfislkfsnas", 500, 5);
+        double average = addTaskRandom("fislkfsnasfislkfsnasfislkfsnasfislkfsnasfislkfsnas", 500, 5, false);
         //51 chars out of database id size with this implementation (max: 50)
         //Exception : 404 NOT FOUND
         checkTaskStats("fislkfsnasfislkfsnasfislkfsnasfislkfsnasfislkfsnasr", 0d);
     }
 
     private void assertAddAndStatsWorksTogether(String taskId, int tests) {
-        double average = addTaskRandom(taskId, 500, tests);
+        double average = addTaskRandom(taskId, 500, tests, false);
         checkTaskStats(taskId, average);
     }
 
@@ -68,7 +78,7 @@ public class ITApplicationTest {
         checkTaskStats(taskId, 200d);
     }
 
-    private double addTaskRandom(String taskId, int round, int tests) {
+    private double addTaskRandom(String taskId, int round, int tests, boolean declareError) {
         double durationSum = 0;
         for (int i=0; i<tests; i++) {
             String url = "http://127.0.0.1:"+serverPort+"/tasks/add";
@@ -77,8 +87,9 @@ public class ITApplicationTest {
             InputTask myInput = new InputTask();
             myInput.setTaskId(taskId);
             myInput.setDuration(duration);
+            LogFactory.getFactory().getInstance(ITApplicationTest.class).debug(url);
             ResponseEntity<String> answer = restTemplate.postForEntity(url, myInput, String.class);
-            assertEquals("Answer must be positive after POST", "ok", answer.getBody());
+            assertEquals("Answer must be positive after POST", declareError ? "error": "ok", answer.getBody());
         }
         return (durationSum/((double)tests));
     }

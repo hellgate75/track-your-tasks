@@ -1,5 +1,6 @@
 package com.mycompany.microservices.metrics.trackyourtasks.model;
 
+import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
  * Not architecture design, no MVP rules, no Assumption map = uncertain coding requirements
  * @author Fabrizio Torelli (hellgate75@gmail.com)
  */
+@JsonComponent
 public class RESTException {
     private HttpStatus status;
     private String name;
