@@ -46,6 +46,11 @@
             <artifactId>h2</artifactId>
         </dependency>
         <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>6.0.6</version>
+        </dependency>
+        <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-mockito-release-full</artifactId>
             <version>1.6.4</version>
@@ -129,6 +134,7 @@
                             <mainClass>
                                 com.mycompany.microservices.metrics.trackyourtasks.Application
                             </mainClass>
+                            <excludeDevtools>false</excludeDevtools>
                         </configuration>
                     </execution>
                 </executions>
