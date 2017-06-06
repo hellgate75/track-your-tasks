@@ -51,10 +51,10 @@ Featured:
 
 ### Architecture ###
 
-We are defining a new feature for the remote logging of event, just to demonstrate the
-effective power of MicroServices. We are going to define with a similar architecture a dashboard 
-to monitor instances. Please leave a comment if you are interested in demonstration on remote-control 
-and docker images TelePort directly from dashboard commands.
+MicroService Architecture is used to define resilient applications. All information
+ are stored in an external resource, we can configure. This service supply features related 
+ to save data about task we execute in other services and collect this data, then it provides 
+ the average of the duration for multiple repetition of the same task, identified by an unique Id.
 
 This MicroService has been designed to be released in Cloud/Private DC with following platforms:
 * [Docker machines](https://docs.docker.com/machine/)
@@ -72,6 +72,12 @@ The available databases :
 * [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-2016)
 * [PostgreSQL](https://www.postgresql.org/)
 * And many other autoincrement RDS
+
+We are defining a new feature for the remote logging of event, just to demonstrate the
+effective power of MicroServices. We are going to define with a similar architecture a dashboard 
+to monitor instances. Please leave a comment if you are interested in demonstration on remote-control 
+and docker images TelePort directly from dashboard commands.
+
 
 ### How we can define and modify the datasource script? ###
 
