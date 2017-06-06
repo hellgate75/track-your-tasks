@@ -4,7 +4,7 @@ Simple Micro-Service storing tasks duration and calculating the average
 
 ### Goals ###
 
-This is a simple project, to demonstrate some features of MicroServices 12 Factors.
+This is a simple project, to demonstrate some features of MicroServices 12 Factors App Paradigm.
 We started with a few independent features and we are going to enlarge these features 
 to reach the MS paradigm, completely.
 
