@@ -1,3 +1,5 @@
+<p align="center"><img src="images/microservices01.png" width="698px" height="400px" /></p>
+
 # track-your-tasks
 
 Simple Micro-Service storing tasks duration and calculating the average
