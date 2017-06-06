@@ -4,6 +4,10 @@ Simple Micro-Service storing tasks duration and calculating the average
 
 ### Goals ###
 
+This is a simple project, to demonstrate some features of MicroServices 12 Factors.
+We started with a few independent features and we are going to enlarge these features 
+to reach the MS paradigm, completely.
+
 This service provide simple feature for insert of task execution stats such as task id and task duration in milliseconds.
 Service interface is composed by two end-points:
  * POST /tasks/add - insert end-point accepting a sample JSON as following:
@@ -30,16 +34,64 @@ Service interface is composed by two end-points:
  ```
 
 
+### Technology ###
+
+Technology stack:
+* [Spring Boot](https://projects.spring.io/spring-boot/) (many libraries)
+* [H2 Database](http://www.h2database.com/html/main.html)
+* [PowerMock](https://github.com/powermock/powermock/wiki/GettingStarted)
+* [JUnit](http://junit.org/junit4/)
+* [Jacoco](http://www.eclemma.org/jacoco/)
+
+Featured:
+* [MySql Server](https://www.mysql.com/)
+
+
+### Architecture ###
+
+We are defining a new feature for the remote logging of event, just to demonstrate the
+effective power of MicroServices. We are going to define with a similar architecture a dashboard 
+to monitor instances. Please leave a comment if you are interested in demonstration on remote-control 
+and docker images TelePort directly from dashboard commands.
+
+This MicroService has been designed to be released in Cloud/Private DC with following platforms:
+* [Docker machines](https://docs.docker.com/machine/)
+* [Docker-Swarm (Portainer.io)](http://portainer.io/)
+* [MESOS (Marathon)](http://mesos.apache.org/)
+* [Kubernets](https://kubernetes.io/)
+* [Spinnaker pipeline to the cloud/PDC](https://www.spinnaker.io/)
+* Other resilient container managers
+
+The available databases :
+* [H2 or similar grammar embedded databases](http://www.h2database.com/html/main.html)
+* [MySql Server](https://www.mysql.com/)
+* [Aurora](https://aws.amazon.com/blogs/aws/highly-scalable-mysql-compat-rds-db-engine/)
+* [Oracle](https://www.oracle.com/database/index.html)
+* [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-2016)
+* [PostgreSQL](https://www.postgresql.org/)
+* And many other autoincrement RDS
+
+### How we can define and modify the datasource script? ###
+
+Datasource SQL script is provided into the resources folder : `schema-h2.sql`.
+Schema in many other databases is the same for Database. You can define a custom :
+application.properties (Spring Boot configuration file) and replace the original one with 
+following command line argument in the java command : `-Dspring.config.location=/location/to/your/configurationfile` and 
+disable the auto-definition of the data-structure if you decide to run custom commands and provisioning the database externally as
+described in the [Spring configuration guide](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-configure-datasource) 
+and you can also refer to the [common application properties](https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html) 
+to get inspiration.
+
 ### Pre-Requisites ###
 
 This is a maven project, written in Java8, so you need :
-* Java 8
-* Maven
-* Internet connection for downloading libraries
+* [Oracle Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+* [Maven](https://maven.apache.org/install.html)
+* Internet connection for downloading required artifacts.
 
-Optionally (to run the resilient container released soon):
-* Docker
-* Docker compose 
+Optionally for DevOps (to run the resilient container released soon):
+* [Docker](https://www.docker.com/get-docker)
+* [Docker compose](https://docs.docker.com/compose/install/)
 
 
 ### Installation ###
@@ -113,7 +165,19 @@ The application is provisioned of unit and integration test, running multiple ap
 ### Road-Map ###
 
 We are preparing a full experience with docker machine and container based MicroService configuration.
-In the test sample we have connected a local h2 database. We have been releasing soon a docker-compose version
+In the test sample we have connected a local h2 database. 
+
+In the plan there are demonstrations around:
+* Security
+* Remote configuration
+* Remote control
+* Alerts
+* Auto-Restart for maintainability purposes
+* Other interesting features
+
+Please take a read to the [12 factor app](https://12factor.net/) before engage to the next releases.
+
+We have been releasing soon a docker-compose version
 within a MySql database and a custom configuration injected in the application, in order to read and save data
 from a new datasource across a private docker network. The new database will not be accessible from the machine.
 The next next adventure will be the definition of the Kubernetes files, to deploy int a cluster the app, with a scaling 
