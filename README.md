@@ -1,4 +1,4 @@
-<p align="center"><img src="images/microservices01.png" width="698px" height="400px" /></p>
+<p align="center"><img src="images/microservices01.png" width="690px" height="169px" /></p>
 
 # track-your-tasks
 
