@@ -125,6 +125,11 @@ To create documentation jars run :
 ```
 
 
+### Run the Micro-Service ###
+
+This Micro-Service must be, first of all built, the in the project root folder you can execute on of following commands.
+
+
 To execute java jar binaries run :
 ```bash
     java -jar target/track-your-tasks-0.0.1-SNAPSHOT-spring-boot.jar
