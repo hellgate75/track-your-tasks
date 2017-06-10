@@ -1,0 +1,44 @@
+version: "3.1"
+
+services:
+  database:
+    build:
+      context: ./database
+    image: track_your_task_db
+    container_name: dev_mysql
+    volumes:
+      - mysql_dev_db_data:/var/lib/mysql
+    #restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: MS_TASKS
+      MYSQL_USER: ms_tasks
+      MYSQL_PASSWORD: ms_tasks
+    ports:
+       - "6603:3306"
+  appserver:
+    build:
+      context: ./
+      dockerfile: app/Dockerfile
+    image: track_your_tasks_app
+    container_name: dev_ms_app
+    ports:
+      - "8090:8090"
+    links:
+      - database:backenddb
+    networks:
+      - front-tier
+      - back-tier
+    volumes:
+      - .:/root/app/code
+      - ./app/application-dev.properties:/root/app/application-dev.properties
+
+secrets:
+  postgres_password:
+    file: ./devsecrets/postgres_password
+
+networks:
+  front-tier:
+  back-tier:
+volumes:
+    mysql_dev_db_data:

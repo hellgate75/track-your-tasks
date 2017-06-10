@@ -112,20 +112,45 @@ Clone this project:
 
 Inside the project folder ...
 
+
 To create the runnable jar binaries run :
 ```bash
     mvn -U -UP clean install
 ```
+
 
 To create documentation jars run :
 ```bash
     mvn javadoc:jar
 ```
 
+
 To execute java jar binaries run :
 ```bash
     java -jar target/track-your-tasks-0.0.1-SNAPSHOT-spring-boot.jar
 ```
+
+
+If you want specify an environment variable named `APP_ENV` (e.g. : DEV,INT,PROD) you can run :
+```bash
+    java -jar target/track-your-tasks-0.0.1-SNAPSHOT-spring-boot.jar
+```
+In this case in the jar path you need to put a custom property file named application-{APP_ENV lower case}.properties
+
+
+Using docker:
+After you have built the source you can run a custom MySQL environment behalf a docker compose file running:
+```bash
+    docker-compose --file docker-compose-dev.yaml up -d
+```
+Then when you have tested the app and/or if you want delete containers and images you can run: 
+```bash
+    docker-compose --file docker-compose-dev.yaml down -v
+    docker rmi -f track_your_tasks_app
+    docker rmi -f track_your_tasks_db
+    
+```
+
 
 You can send some requests via curl or any browser REST api plugin.
 
@@ -134,20 +159,20 @@ You can send some requests via curl or any browser REST api plugin.
 
 Using curl to insert task data :
 ```bash
-    curl -X POST -H 'Content-Type: application/json' -d '{"taskId":"sdadaduut7564","duration":700}' http://localhost:8090/tasks/add 
+    curl -X POST -H 'Content-Type: application/json;Accept: text/plain' -d '{"taskId":"sdadaduut7564","duration":700}' http://localhost:8090/tasks/add 
     answer:
     ok
-    curl -X POST -H 'Content-Type: application/json' -d '{"taskId":"sdadaduut7564","duration":1100}' http://localhost:8090/tasks/add 
+    curl -X POST -H 'Content-Type: application/json;Accept: text/plain' -d '{"taskId":"sdadaduut7564","duration":1100}' http://localhost:8090/tasks/add 
     answer:
     ok
-    curl -X POST -H 'Content-Type: application/json' -d '{"taskId":"sdadaduut7564","duration":900}' http://localhost:8090/tasks/add 
+    curl -X POST -H 'Content-Type: application/json;Accept: text/plain' -d '{"taskId":"sdadaduut7564","duration":900}' http://localhost:8090/tasks/add 
     answer:
     ok
 ```
 
 Using curl to read task average data :
 ```bash
-    curl -X POST -H 'Content-Type: application/json' http://localhost:8090/tasks/stats/sdadaduut7564
+    curl -X GET -H 'Content-Type: application/json;Accept: application/json' http://localhost:8090/tasks/stats/sdadaduut7564
     answer:
     {
       "taskId": "sdadaduut7564",

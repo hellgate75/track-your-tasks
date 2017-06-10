@@ -14,8 +14,8 @@ public class Task {
      * Row Id
      */
     @Id
-    @Column(name = "ID")
-    @GeneratedValue(strategy=GenerationType.TABLE)
+    @Column(name = "ID", insertable = false, unique = true, updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**

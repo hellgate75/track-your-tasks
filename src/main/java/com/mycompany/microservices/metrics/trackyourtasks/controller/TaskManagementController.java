@@ -6,6 +6,7 @@ import com.mycompany.microservices.metrics.trackyourtasks.exceptions.TaskNotFoun
 import com.mycompany.microservices.metrics.trackyourtasks.model.InputTask;
 import com.mycompany.microservices.metrics.trackyourtasks.model.OutputTask;
 import com.mycompany.microservices.metrics.trackyourtasks.service.TaskManagementService;
+import org.apache.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -39,11 +40,14 @@ public class TaskManagementController {
             }
             return task;
         } catch (IllegalArgumentException exception) {
+            LogManager.getLogger(TaskManagementController.class).error("Error during Get Task Stats operations", exception);
             throw new InvalidArgumentException(exception.getMessage());
-        } catch (TaskNotFoundException exc) {
-            throw exc;
-        } catch (Exception ex) {
-            throw new InternalException(ex);
+        } catch (TaskNotFoundException exception) {
+            LogManager.getLogger(TaskManagementController.class).error("Error during Get Task Stats operations", exception);
+            throw exception;
+        } catch (Exception exception) {
+            LogManager.getLogger(TaskManagementController.class).error("Error during Get Task Stats operations", exception);
+            throw new InternalException(exception);
         }
     }
 
@@ -58,6 +62,7 @@ public class TaskManagementController {
             InputTask addedTask = taskService.addTask(task);
             return addedTask != null ? "ok" : "error";
         } catch (Throwable ex) {
+            LogManager.getLogger(TaskManagementController.class).error("Error during Add Task operations", ex);
             return "error";
         }
     }

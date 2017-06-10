@@ -54,10 +54,10 @@ public class ITApplicationTest {
         assertTaskIdNotExists("kjgkjbkjbkbk");
     }
 
-    @Test(expected = HttpClientErrorException.class)
+    @Test
     public void integrationTestStatsVeryLongTaskId() throws TaskNotFoundException {
         //51 chars out of database id size with this implementation (max: 50)
-        double average = addTaskRandom("fislkfsnasfislkfsnasfislkfsnasfislkfsnasfislkfsnasr", 500, 5,true);
+        double average = addTaskRandom("fislkfsnasfislkfsnasfislkfsnasfislkfsnasfislkfsnasr", 500, 5,false);
         checkTaskStats("fislkfsnasfislkfsnasfislkfsnasfislkfsnasfislkfsnasr", average);
     }
 
